@@ -1,0 +1,299 @@
+[
+    {
+        "id": "d053bfa4f74cf32b",
+        "type": "tab",
+        "label": "플로우 3",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "a28d4a4424944c77",
+        "type": "status",
+        "z": "d053bfa4f74cf32b",
+        "name": "연결상태",
+        "scope": [
+            "27c7f96c7f954680"
+        ],
+        "x": 100,
+        "y": 320,
+        "wires": [
+            [
+                "84368afd7f1629cd"
+            ]
+        ]
+    },
+    {
+        "id": "27c7f96c7f954680",
+        "type": "mqtt out",
+        "z": "d053bfa4f74cf32b",
+        "name": "",
+        "topic": "201908041/Input",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e42cc9e56bc14a23",
+        "x": 590,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "1090afa3b59539b3",
+        "type": "debug",
+        "z": "d053bfa4f74cf32b",
+        "name": "연결 상태 확인",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "9cad2df21e3d7fd7",
+        "type": "ui_text_input",
+        "z": "d053bfa4f74cf32b",
+        "name": "",
+        "label": "토픽과 값",
+        "tooltip": "",
+        "group": "c6e8c3f8b2e16e82",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "mode": "text",
+        "delay": "0",
+        "topic": "server",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 100,
+        "y": 160,
+        "wires": [
+            [
+                "0e62135ea0d926da"
+            ]
+        ]
+    },
+    {
+        "id": "0e62135ea0d926da",
+        "type": "function",
+        "z": "d053bfa4f74cf32b",
+        "name": "function 1",
+        "func": "let [t, v] = msg.payload.split(',');\nmsg.topic = t;\nmsg.payload = v;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 160,
+        "wires": [
+            [
+                "27c7f96c7f954680"
+            ]
+        ]
+    },
+    {
+        "id": "02ca7574e84c6652",
+        "type": "function",
+        "z": "d053bfa4f74cf32b",
+        "name": "function 3",
+        "func": "msg.action = \"connect\";\nmsg.broker = {broker:msg.payload, port:1883, force:true};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 80,
+        "wires": [
+            [
+                "27c7f96c7f954680"
+            ]
+        ]
+    },
+    {
+        "id": "dc34eb1d1ab5f31d",
+        "type": "ui_text_input",
+        "z": "d053bfa4f74cf32b",
+        "name": "",
+        "label": "서버",
+        "tooltip": "",
+        "group": "c6e8c3f8b2e16e82",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": 300,
+        "topic": "broker",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 90,
+        "y": 80,
+        "wires": [
+            [
+                "02ca7574e84c6652"
+            ]
+        ]
+    },
+    {
+        "id": "6734c23c72d67afd",
+        "type": "mqtt in",
+        "z": "d053bfa4f74cf32b",
+        "name": "",
+        "topic": "201908041/Input",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e42cc9e56bc14a23",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 240,
+        "wires": [
+            [
+                "0c74154e115f283f"
+            ]
+        ]
+    },
+    {
+        "id": "0c74154e115f283f",
+        "type": "debug",
+        "z": "d053bfa4f74cf32b",
+        "name": "Input 값",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "84368afd7f1629cd",
+        "type": "function",
+        "z": "d053bfa4f74cf32b",
+        "name": "function 5",
+        "func": "if (msg.status.fill == \"green\") {\n    node.status({fill: \"green\", shape: \"dot\", text: \"연결\"});\n    msg.payload = \"연결\";\n} else {\n    node.status({fill: \"red\", shape: \"ring\", text: \"연결 끊김\"});\n    msg.payload = \"연결 끊김\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 320,
+        "wires": [
+            [
+                "1090afa3b59539b3",
+                "365a3b06cacc98b0",
+                "bb5ad7333fa2cd3d"
+            ]
+        ]
+    },
+    {
+        "id": "365a3b06cacc98b0",
+        "type": "ui_led",
+        "z": "d053bfa4f74cf32b",
+        "order": 2,
+        "group": "c6e8c3f8b2e16e82",
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "colorForValue": [
+            {
+                "color": "#ff0000",
+                "value": "연결 끊김",
+                "valueType": "str"
+            },
+            {
+                "color": "#008000",
+                "value": "연결됨",
+                "valueType": "str"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "shape": "circle",
+        "showGlow": true,
+        "name": "",
+        "x": 550,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "bb5ad7333fa2cd3d",
+        "type": "ui_audio",
+        "z": "d053bfa4f74cf32b",
+        "name": "",
+        "group": "c6e8c3f8b2e16e82",
+        "voice": "Google 한국의",
+        "always": "",
+        "x": 560,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "e42cc9e56bc14a23",
+        "type": "mqtt-broker",
+        "name": "Mycomputer",
+        "broker": "10.74.122.37",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "c6e8c3f8b2e16e82",
+        "type": "ui_group",
+        "name": "서버목록",
+        "tab": "98cab493c789a10d",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "98cab493c789a10d",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
